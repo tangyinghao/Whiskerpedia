@@ -55,20 +55,6 @@ fun WhiskerpediaAppBar(
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        actions = {
-            if (currentScreen == WhiskerpediaScreen.List) {
-                var menuExpanded by remember { mutableStateOf(false) }
-
-                IconButton(onClick = {
-                    menuExpanded = !menuExpanded
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.MoreVert,
-                        contentDescription = "Open menu to select different "
-                    )
-                }
-            }
-        },
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
