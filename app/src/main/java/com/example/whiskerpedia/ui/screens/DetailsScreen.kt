@@ -14,7 +14,7 @@ import coil.compose.AsyncImage
 import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 
 @Composable
-fun DetailScreen(
+fun DetailsScreen(
     whiskerpediaViewModel: WhiskerpediaViewModel,
     modifier: Modifier = Modifier,
     navController: NavHostController

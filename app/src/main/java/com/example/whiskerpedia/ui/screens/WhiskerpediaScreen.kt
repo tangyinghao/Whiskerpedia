@@ -131,7 +131,7 @@ fun WhiskerpediaApp(
                 )
             }
             composable(route = WhiskerpediaScreen.Detail.name) {
-                DetailScreen(
+                DetailsScreen(
                     whiskerpediaViewModel = whiskerpediaViewModel,
                     //selectedWhiskerpediaUiState = whiskerpediaViewModel.selectedWhiskerpediaUiState,
                     modifier = Modifier,
