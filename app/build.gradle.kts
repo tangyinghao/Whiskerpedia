@@ -59,8 +59,10 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit.v290)
     implementation(libs.converter.kotlinx.serialization)
-    implementation(libs.kotlinx.serialization.json.v150)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.logging.interceptor.v500alpha2)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

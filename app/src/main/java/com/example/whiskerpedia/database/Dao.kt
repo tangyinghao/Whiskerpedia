@@ -1,4 +1,4 @@
 package com.example.whiskerpedia.database
 
-class CatDao {
+class Dao {
 }

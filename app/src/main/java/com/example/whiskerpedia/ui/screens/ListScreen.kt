@@ -1,4 +1,4 @@
 package com.example.whiskerpedia.ui.screens
 
-class CatListScreen {
+class ListScreen {
 }
