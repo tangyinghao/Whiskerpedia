@@ -1,5 +1,6 @@
 package com.example.whiskerpedia.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,8 +22,11 @@ import com.example.whiskerpedia.viewmodel.UiState
 import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 
 @Composable
-fun ListScreen(viewModel: WhiskerpediaViewModel) {
-    val uiState = viewModel.uiState
+fun ListScreen(
+    uiState: UiState,
+    onListItemClicked: (Image) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     when (uiState) {
         is UiState.Loading -> {
@@ -44,7 +48,11 @@ fun ListScreen(viewModel: WhiskerpediaViewModel) {
                     .padding(8.dp)
             ) {
                 items(uiState.images) { image ->
-                    CatCard(image)
+                    CatCard(
+                        image = image,
+                        onClick = { onListItemClicked(image) },
+                        modifier = Modifier.padding(8.dp)
+                    )
                 }
             }
         }
@@ -52,12 +60,17 @@ fun ListScreen(viewModel: WhiskerpediaViewModel) {
 }
 
 @Composable
-fun CatCard(image: Image) {
+fun CatCard(
+    image: Image,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = MaterialTheme.shapes.medium
     ) {

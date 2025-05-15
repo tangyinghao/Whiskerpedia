@@ -9,4 +9,4 @@ data class Image(
     val width: Int,
     val height: Int,
     val breeds: List<Breed> = emptyList()
-)
+) : java.io.Serializable

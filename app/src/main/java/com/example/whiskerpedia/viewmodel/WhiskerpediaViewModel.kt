@@ -1,5 +1,6 @@
 package com.example.whiskerpedia.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -26,6 +27,9 @@ sealed interface UiState {
 
 class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
+    var selectedImage: Image? = null
+        private set
+
     var uiState: UiState by mutableStateOf(UiState.Loading)
         private set
 
@@ -38,13 +42,21 @@ class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
             uiState = UiState.Loading
             try {
                 val result = repository.getCatImages()
+                Log.d("Whiskerpedia", "Fetched images: ${result.size}")
                 uiState = UiState.Success(result)
             } catch (e: IOException) {
+                Log.e("Whiskerpedia", "IOException: ${e.message}")
                 uiState = UiState.Error
             } catch (e: HttpException) {
+                Log.e("Whiskerpedia", "HttpException: ${e.code()}")
                 uiState = UiState.Error
             }
         }
+    }
+
+
+    fun setSelectedCat(image: Image) {
+        selectedImage = image
     }
 
     companion object {
