@@ -33,7 +33,8 @@ import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 
 enum class WhiskerpediaScreen(@StringRes val title: Int) {
     List(R.string.app_name),
-    Detail(R.string.cat_details)
+    Detail(R.string.cat_details),
+    //Favorites(R.string.favorites)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
