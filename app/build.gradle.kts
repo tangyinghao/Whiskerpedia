@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Coil
-    implementation(libs.coil.compose.v240)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
 
@@ -61,8 +61,7 @@ dependencies {
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.logging.interceptor.v500alpha2)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-
+    implementation(libs.converter.kotlinx.serialization)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
