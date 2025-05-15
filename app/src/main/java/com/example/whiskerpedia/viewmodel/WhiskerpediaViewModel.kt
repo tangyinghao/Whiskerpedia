@@ -1,5 +1,8 @@
 package com.example.whiskerpedia.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
@@ -10,12 +13,21 @@ import com.example.whiskerpedia.database.Repository
 import com.example.whiskerpedia.models.Image
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
+
+sealed interface UiState {
+    data class Success(val images: List<Image>) : UiState
+    object Error : UiState
+    object Loading : UiState
+}
 
 class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _images = MutableStateFlow<List<Image>>(emptyList())
-    val images: StateFlow<List<Image>> = _images
+    var uiState: UiState by mutableStateOf(UiState.Loading)
+        private set
 
     init {
         fetchImages()
@@ -23,10 +35,14 @@ class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
     private fun fetchImages() {
         viewModelScope.launch {
+            uiState = UiState.Loading
             try {
-                _images.value = repository.getCatImages()
-            } catch (e: Exception) {
-                e.printStackTrace()
+                val result = repository.getCatImages()
+                uiState = UiState.Success(result)
+            } catch (e: IOException) {
+                uiState = UiState.Error
+            } catch (e: HttpException) {
+                uiState = UiState.Error
             }
         }
     }

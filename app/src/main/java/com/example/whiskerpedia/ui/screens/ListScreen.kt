@@ -5,25 +5,43 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.whiskerpedia.models.Image
+import com.example.whiskerpedia.viewmodel.UiState
 import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 
 @Composable
 fun ListScreen(viewModel: WhiskerpediaViewModel) {
-    val imageList by viewModel.images.collectAsState()
+    val uiState = viewModel.uiState
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        items(imageList) { image ->
-            CatCard(image)
-            Spacer(modifier = Modifier.height(8.dp))
+    when (uiState) {
+        is UiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is UiState.Error -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Error loading images")
+            }
+        }
+
+        is UiState.Success -> {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                items(uiState.images) { image ->
+                    CatCard(image)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
         }
     }
 }
