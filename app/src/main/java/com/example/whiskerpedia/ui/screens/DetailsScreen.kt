@@ -40,7 +40,7 @@ fun DetailsScreen(
 
     val image = whiskerpediaViewModel.selectedImage
     val breed = whiskerpediaViewModel.allBreeds.find { it.referenceImageId == image?.id}
-    val isFavorite = favoriteCats.any { it.id == breed?.id }
+    val isFavorite = favoriteCats.any { it.id == image?.id }
 
     if (image != null) {
         Column(
@@ -73,9 +73,9 @@ fun DetailsScreen(
 
                 IconButton(onClick = {
                     if (isFavorite) {
-                        whiskerpediaViewModel.removeFromFavorites(breed)
+                        whiskerpediaViewModel.removeFromFavorites(image)
                     } else {
-                        whiskerpediaViewModel.addToFavorites(breed)
+                        whiskerpediaViewModel.addToFavorites(image)
                     }
                 }) {
                     Icon(
