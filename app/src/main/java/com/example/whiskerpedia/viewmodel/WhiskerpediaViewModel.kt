@@ -11,10 +11,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewModelScope
 import com.example.whiskerpedia.WhiskerpediaApp
 import com.example.whiskerpedia.database.Repository
+import com.example.whiskerpedia.models.Breed
 import com.example.whiskerpedia.models.Image
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,9 +23,12 @@ sealed interface UiState {
     object Loading : UiState
 }
 
-class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
+open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
     var selectedImage: Image? = null
+        private set
+
+    var allBreeds: List<Breed> by mutableStateOf(emptyList())
         private set
 
     var uiState: UiState by mutableStateOf(UiState.Loading)
@@ -57,6 +58,22 @@ class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
     fun setSelectedCat(image: Image) {
         selectedImage = image
+    }
+
+    // NEW: List of favorite movies
+    open var favoriteCats: List<Image> by mutableStateOf(emptyList()) // No need for sealed interface as only instant local memory update
+        private set
+
+    // NEW: Add movie to favorites
+    fun addToFavorites(image: Image) {
+        if (favoriteCats.none { it.id == image.id }) {
+            favoriteCats = (favoriteCats + image)
+        }
+    }
+
+    // NEW: Remove movie from favorites
+    fun removeFromFavorites(image: Image) {
+        favoriteCats = favoriteCats.filterNot { it.id == image.id }
     }
 
     companion object {
