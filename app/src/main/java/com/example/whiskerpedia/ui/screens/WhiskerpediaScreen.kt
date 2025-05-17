@@ -136,8 +136,7 @@ fun WhiskerpediaApp(
                 DetailsScreen(
                     uiState = whiskerpediaViewModel.uiState,
                     whiskerpediaViewModel = whiskerpediaViewModel,
-                    modifier = Modifier,
-                    navController = navController
+                    modifier = Modifier
                 )
             }
             composable(route = WhiskerpediaScreen.Favorites.name) {
