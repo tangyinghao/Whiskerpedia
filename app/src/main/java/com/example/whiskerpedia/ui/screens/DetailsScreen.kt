@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,7 +37,7 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    val favoriteCats = whiskerpediaViewModel.favoriteCats // Now getting the favoriteMovies state
+    val favoriteCats = whiskerpediaViewModel.favoriteCats
 
     val image = whiskerpediaViewModel.selectedImage
     val breed = whiskerpediaViewModel.allBreeds.find { it.referenceImageId == image?.id}
@@ -71,19 +72,24 @@ fun DetailsScreen(
                     modifier = Modifier.weight(1f)
                 )
 
-                IconButton(onClick = {
-                    if (isFavorite) {
-                        whiskerpediaViewModel.removeFromFavorites(image)
-                    } else {
-                        whiskerpediaViewModel.addToFavorites(image)
-                    }
-                }) {
+                IconButton(
+                    onClick = {
+                        if (isFavorite) {
+                            whiskerpediaViewModel.removeFromFavorites(image)
+                        } else {
+                            whiskerpediaViewModel.addToFavorites(image)
+                        }
+                    },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = if (isFavorite) Color(0xFFB00020).copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White
+                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites"
                     )
                 }
+
             }
         }
     } else {

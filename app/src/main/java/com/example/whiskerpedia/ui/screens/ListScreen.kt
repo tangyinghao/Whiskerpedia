@@ -63,7 +63,7 @@ fun ListScreen(
 fun CatCard(
     image: Image,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = Modifier

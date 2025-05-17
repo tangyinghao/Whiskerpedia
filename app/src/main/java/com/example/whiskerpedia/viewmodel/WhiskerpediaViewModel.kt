@@ -60,18 +60,15 @@ open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel
         selectedImage = image
     }
 
-    // NEW: List of favorite movies
     open var favoriteCats: List<Image> by mutableStateOf(emptyList()) // No need for sealed interface as only instant local memory update
         private set
 
-    // NEW: Add movie to favorites
     fun addToFavorites(image: Image) {
         if (favoriteCats.none { it.id == image.id }) {
             favoriteCats = (favoriteCats + image)
         }
     }
 
-    // NEW: Remove movie from favorites
     fun removeFromFavorites(image: Image) {
         favoriteCats = favoriteCats.filterNot { it.id == image.id }
     }

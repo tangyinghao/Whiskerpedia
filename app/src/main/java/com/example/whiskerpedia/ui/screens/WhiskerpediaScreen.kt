@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,7 +37,7 @@ import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 enum class WhiskerpediaScreen(@StringRes val title: Int) {
     List(R.string.app_name),
     Detail(R.string.cat_details),
-    //Favorites(R.string.favorites)
+    Favorites(R.string.favorites)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +47,8 @@ fun WhiskerpediaAppBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    whiskerpediaViewModel: WhiskerpediaViewModel
+    whiskerpediaViewModel: WhiskerpediaViewModel,
+    onFavoritesClick: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -67,6 +71,21 @@ fun WhiskerpediaAppBar(
                 }
             }
         },
+        actions = {
+            if (currentScreen == WhiskerpediaScreen.List) {
+                IconButton(
+                    onClick = onFavoritesClick,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = Color(0xFFB00020).copy(alpha = 0.85f)
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = stringResource(R.string.favorites)
+                    )
+                }
+            }
+        }
     )
 }
 
@@ -79,7 +98,7 @@ fun WhiskerpediaApp(
     val currentScreen = when (backStackEntry?.destination?.route?.substringBefore("/")) {
         WhiskerpediaScreen.List.name -> WhiskerpediaScreen.List
         WhiskerpediaScreen.Detail.name -> WhiskerpediaScreen.Detail
-        //WhiskerpediaScreen.Favorites.name -> WhiskerpediaScreen.Favorites
+        WhiskerpediaScreen.Favorites.name -> WhiskerpediaScreen.Favorites
         else -> WhiskerpediaScreen.List
     }
 
@@ -92,9 +111,9 @@ fun WhiskerpediaApp(
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() },
                 whiskerpediaViewModel = whiskerpediaViewModel,
-//                onFavoritesClick = {
-//                    navController.navigate(WhiskerpediaScreen.Favorites.name)
-//                }
+                onFavoritesClick = {
+                    navController.navigate(WhiskerpediaScreen.Favorites.name)
+                }
             )
         }
     ) { innerPadding ->
@@ -120,23 +139,22 @@ fun WhiskerpediaApp(
             composable(route = WhiskerpediaScreen.Detail.name) {
                 DetailsScreen(
                     whiskerpediaViewModel = whiskerpediaViewModel,
-                    //selectedWhiskerpediaUiState = whiskerpediaViewModel.selectedWhiskerpediaUiState,
                     modifier = Modifier,
                     navController = navController
                 )
             }
-//            composable(route = WhiskerpediaScreen.Favorites.name) {
-//                FavoritesScreen(
-//                    favorites = whiskerpediaViewModel.favoriteCats,
-//                    onWhiskerpediaClicked = { image  ->
-//                        whiskerpediaViewModel.setSelectedWhiskerpedia(image)
-//                        navController.navigate(WhiskerpediaScreen.Detail.name)
-//                    },
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .padding(16.dp)
-//                )
-//            }
+            composable(route = WhiskerpediaScreen.Favorites.name) {
+                FavoritesScreen(
+                    favorites = whiskerpediaViewModel.favoriteCats,
+                    onListItemClicked = { image  ->
+                        whiskerpediaViewModel.setSelectedCat(image)
+                        navController.navigate(WhiskerpediaScreen.Detail.name)
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                )
+            }
         }
     }
 }

@@ -2,5 +2,5 @@
     <string name="app_name">Whiskerpedia</string>
     <string name="back_button">Back</string>
     <string name="cat_details">Cat Details</string>
-    <string name="favorites">Favorites</string>
+    <string name="favorites">Favorite Cats</string>
 </resources>
