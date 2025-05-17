@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.whiskerpedia.models.Image
 import com.example.whiskerpedia.viewmodel.UiState
-import com.example.whiskerpedia.viewmodel.WhiskerpediaViewModel
 
 @Composable
 fun ListScreen(
@@ -27,7 +26,6 @@ fun ListScreen(
     onListItemClicked: (Image) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     when (uiState) {
         is UiState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

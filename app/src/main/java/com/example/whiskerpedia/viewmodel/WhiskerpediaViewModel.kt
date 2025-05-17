@@ -25,13 +25,16 @@ sealed interface UiState {
 
 open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel() {
 
+    var uiState: UiState by mutableStateOf(UiState.Loading)
+        private set
+
     var selectedImage: Image? = null
         private set
 
     var allBreeds: List<Breed> by mutableStateOf(emptyList())
         private set
 
-    var uiState: UiState by mutableStateOf(UiState.Loading)
+    open var favoriteCats: List<Image> by mutableStateOf(emptyList())
         private set
 
     init {
@@ -55,13 +58,9 @@ open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel
         }
     }
 
-
     fun setSelectedCat(image: Image) {
         selectedImage = image
     }
-
-    open var favoriteCats: List<Image> by mutableStateOf(emptyList()) // No need for sealed interface as only instant local memory update
-        private set
 
     fun addToFavorites(image: Image) {
         if (favoriteCats.none { it.id == image.id }) {
