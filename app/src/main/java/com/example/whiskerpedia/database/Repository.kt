@@ -13,4 +13,9 @@ class Repository(private val apiService: ApiService) {
     suspend fun getBreeds(): List<Breed> {
         return apiService.getBreeds()
     }
+
+    suspend fun getCatImagesByBreed(breedId: String, limit: Int = 10): List<Image> {
+        return apiService.getImages(limit = limit, breedId = breedId)
+    }
+
 }

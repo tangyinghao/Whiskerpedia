@@ -31,6 +31,9 @@ open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel
     var selectedImage: Image? = null
         private set
 
+    var relatedImages by mutableStateOf(listOf<Image>())
+        private set
+
     var allBreeds: List<Breed> by mutableStateOf(emptyList())
         private set
 
@@ -58,8 +61,21 @@ open class WhiskerpediaViewModel(private val repository: Repository) : ViewModel
         }
     }
 
+    fun fetchRelatedImages() {
+        val breedId = selectedImage?.breeds?.firstOrNull()?.id ?: return
+
+        viewModelScope.launch {
+            try {
+                relatedImages = repository.getCatImagesByBreed(breedId)
+            } catch (e: Exception) {
+                Log.e("Whiskerpedia", "Failed to fetch related images: ${e.message}")
+            }
+        }
+    }
+
     fun setSelectedCat(image: Image) {
         selectedImage = image
+        fetchRelatedImages()
     }
 
     fun addToFavorites(image: Image) {
