@@ -20,6 +20,7 @@ import com.example.whiskerpedia.viewmodel.UiState
 fun FavoritesScreen(
     uiState: UiState,
     onListItemClicked: (Image) -> Unit,
+    favorites: List<Image>,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
@@ -34,11 +35,13 @@ fun FavoritesScreen(
             }
         }
         is UiState.Success -> {
-            LazyColumn(modifier = modifier) {
-                items(uiState.images) { image ->
+            LazyColumn(modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+            ) {
+                items(favorites) { image ->
                     CatCard(
                         image = image,
-                        modifier = Modifier.padding(8.dp),
                         onClick = { onListItemClicked(image) }
                     )
                 }

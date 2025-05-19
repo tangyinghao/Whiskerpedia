@@ -146,6 +146,7 @@ fun WhiskerpediaApp(
                         whiskerpediaViewModel.setSelectedCat(image)
                         navController.navigate(WhiskerpediaScreen.Detail.name)
                     },
+                    favorites = whiskerpediaViewModel.favoriteCats,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp)
